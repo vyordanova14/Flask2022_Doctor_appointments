@@ -27,6 +27,8 @@ class DoctorModel(BaseUserModel):
     certificate = db.Column(db.String(255), nullable=False)
     role = db.Column(db.Enum(UserRole), default=UserRole.doctor, nullable=False)
 
+    complaint = db.relationship('AppointmentsModel')
+
 
 class AdminModel(BaseUserModel):
     __tablename__ = "admins"
