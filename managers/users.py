@@ -1,17 +1,14 @@
+import users as users
 from werkzeug.exceptions import BadRequest
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from db import db
+from helpers import users_models
 from managers.auth import AuthManager
-from models import DoctorModel, PatientModel, AdminModel
 
 
 class UserManager:
-    users = {
-             "doctor": DoctorModel,
-             "patient": PatientModel,
-             "admin": AdminModel,
-             }
+    users = users_models
 
     @staticmethod
     def register(data, user_role):

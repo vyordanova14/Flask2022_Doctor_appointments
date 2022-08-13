@@ -19,4 +19,4 @@ class AdminLogInResource(Resource):
         data = request.get_json()
         token = UserManager.login(data=data, user_role="admin")
 
-        return {"token": token}, 200
+        return {"token": token, "role": "admin"}, 200

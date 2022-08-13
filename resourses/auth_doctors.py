@@ -19,4 +19,4 @@ class DoctorsLogInResource(Resource):
         data = request.get_json()
         token = UserManager.login(data=data, user_role="doctor")
 
-        return {"token": token}, 200
+        return {"token": token, "role": "doctor"}, 200
