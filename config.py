@@ -1,5 +1,12 @@
 from decouple import config
 
+from flask import Flask
+from flask_migrate import Migrate
+from flask_restful import Api
+
+from db import db
+from resourses.routes import routes
+
 
 class ProdConfig:
     FLASK_ENV = "prod"
@@ -19,3 +26,16 @@ class DevConfig:
         f"postgresql://{config('DB_USER')}:{config('DB_PASSWORD')}"
         f"@localhost:{config('DB_PORT')}/{config('DB_NAME')}"
     )
+
+
+def create_app(config='config.DevConfig'):
+    app = Flask(__name__)
+    configuration = config
+    app.config.from_object(configuration)
+    db.init_app(app)
+    api = Api(app)
+    migrate = Migrate(app, db)
+
+    [api.add_resource(*route) for route in routes]
+
+    return app
