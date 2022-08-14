@@ -11,6 +11,11 @@ from schemas.responses.specialities import SpecialitySchemaResponse
 class RegisteredDoctorsBySpecialty(Resource):
     @auth.login_required()
     def post(self):
+        """
+        Checks all available doctors for certain speciality referring to
+        specialities_possible which holds all possible specialties in the online appointments
+        Return: <json> data extracted from DB
+        """
         data = request.get_json()
         speciality = data["speciality"]
         current_user = auth.current_user()
@@ -22,8 +27,3 @@ class RegisteredDoctorsBySpecialty(Resource):
 
             raise BadRequest(f"There are no available {speciality}s for online appointments. "
                              f"Please check the available: {specialities_possible}")
-
-
-
-
-

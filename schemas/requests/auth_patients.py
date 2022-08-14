@@ -1,4 +1,4 @@
-from marshmallow import Schema, fields, validate
+from marshmallow import fields, validate
 
 from schemas.requests.base import BaseRegisterRequestSchema, BaseLogInRequestSchema
 

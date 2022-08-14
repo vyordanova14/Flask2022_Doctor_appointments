@@ -2,22 +2,25 @@ from password_strength import PasswordPolicy
 
 from models import DoctorModel, PatientModel, AdminModel
 
+# Requirements for password
 policy = PasswordPolicy.from_names(
-    uppercase = 1,    # need min. 1 uppercase letters
-    numbers = 1,      # need min. 1 digits
-    special = 1,      # need min. 1 special characters
+    uppercase=1,  # need min. 1 uppercase letters
+    numbers=1,    # need min. 1 digits
+    special=1,    # need min. 1 special characters
 )
 
-specialities_possible = ["endocrinologist",
-                         'gynecologist',
-                         'surgeon',
-                         'cardiologist',
-                         'neurologist',
-                         'allegologist',
-                         ]
-
+# Specialities available for online appointments
+specialities_possible = [
+    "endocrinologist",
+    "gynecologist",
+    "surgeon",
+    "cardiologist",
+    "neurologist",
+    "allegologist",
+]
+# User roles and their corresponding Model
 users_models = {
-         "doctor": DoctorModel,
-         "patient": PatientModel,
-         "admin": AdminModel,
-        }
+    "doctor": DoctorModel,
+    "patient": PatientModel,
+    "admin": AdminModel,
+}

@@ -13,6 +13,12 @@ class AppointmentsRequestSchema(Schema):
 
     @validates("speciality")
     def validate_speciality(self, value):
+        """
+        Validates if specialty chosen by user exist in DB
+
+        Args:
+            value: string holding speciality coming from user
+        """
 
         doctors_specialities = [doctor.speciality for doctor in DoctorModel.query.all()]
         if value not in doctors_specialities:

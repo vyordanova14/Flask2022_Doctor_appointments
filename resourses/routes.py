@@ -15,7 +15,7 @@ routes = (
     (AdminLogInResource, '/login/admins/'),
     (RegisteredDoctorsBySpecialty, "/specialists/"),
     (AppointmentsResource, "/appointments/"),
-    (ApproveAppointmentResource, "/appointments/<int:id>/approve/"),
-    (RejectAppointmentResource, "/appointments/<int:id>/reject/"),
-    (DeleteDoctorResource, "/doctors/<int:id>/delete/"),
+    (ApproveAppointmentResource, "/appointments/<int:id_app>/approve/"),
+    (RejectAppointmentResource, "/appointments/<int:id_app>/reject/"),
+    (DeleteDoctorResource, "/doctors/<int:id_doc>/delete/"),
 )

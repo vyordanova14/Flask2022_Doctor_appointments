@@ -9,6 +9,12 @@ class BaseRegisterRequestSchema(Schema):
 
     @validates("password")
     def validate_password(self, value):
+        """
+        Validates if password is following site's requirements
+
+        Args:
+            value: string holding password coming from user
+        """
         errors = policy.test(value)
         if errors:
             raise ValidationError(f'The password does not meet the requirements: {errors}')

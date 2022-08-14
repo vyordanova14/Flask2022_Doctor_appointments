@@ -19,6 +19,12 @@ class AWSService:
         )
 
     def verify_email_identity(self, email):
+        """
+        Responsible for logic connected to sending verification email when user first register
+
+        Args:
+            email: string holding user's email
+        """
         try:
             response = self.ses_client.verify_email_identity(EmailAddress=email)
             return {
@@ -30,8 +36,15 @@ class AWSService:
             raise InternalServerError("AWS SES is not available at the moment!")
 
     def send_email(self, email, email_body):
+        """
+        Responsible for sending email after an appointment has been approved or rejected
+
+        Args:
+            email: string holding user's email
+            email_body: html string holding the body of the email. Check email_templates
+        """
         try:
-            response = self.ses_client.send_email(
+            self.ses_client.send_email(
                 Destination={
                     "ToAddresses": [
                         email,
@@ -51,6 +64,5 @@ class AWSService:
                 },
                 Source=config("SOURCE_EMAIL"),
             )
-            return {"message": f"{response} Email sent successfully!"}
         except ClientError:
             raise InternalServerError("AWS SES is not available at the moment!")

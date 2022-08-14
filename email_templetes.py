@@ -1,5 +1,14 @@
 def approved_appointment(first_name, date_of_appointment):
-    templete = f"""
+    """
+    Creates email body template for approved appointments
+
+    Args:
+        first_name: name of recipient
+        date_of_appointment: date of appointment
+
+    Return: html string holding the email body
+    """
+    template = f"""
         <html>
             <head></head>
             <h1 style='text-align:center'>Approved appointment!</h1>
@@ -10,10 +19,20 @@ def approved_appointment(first_name, date_of_appointment):
             </body>
         </html>
     """
-    return templete
+    return template
+
 
 def rejected_appointment(first_name, date_of_appointment):
-    templete = f"""
+    """
+        Creates email body template for rejected appointments
+
+        Args:
+            first_name: name of recipient
+            date_of_appointment: date of appointment
+
+        Return: html string holding the email body
+        """
+    template = f"""
             <html>
                 <head></head>
                 <h1 style='text-align:center'>Rejected appointment!</h1>
@@ -25,4 +44,4 @@ def rejected_appointment(first_name, date_of_appointment):
                 </body>
             </html>
         """
-    return templete
+    return template
