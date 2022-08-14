@@ -1,3 +1,4 @@
+from resourses.admin_capabilities import DeleteDoctorResource
 from resourses.appointments import AppointmentsResource, ApproveAppointmentResource, RejectAppointmentResource
 from resourses.auth_admin import AdminRegisterResource, AdminLogInResource
 from resourses.auth_doctors import DoctorsRegisterResource, DoctorsLogInResource
@@ -16,4 +17,5 @@ routes = (
     (AppointmentsResource, "/appointments/"),
     (ApproveAppointmentResource, "/appointments/<int:id>/approve/"),
     (RejectAppointmentResource, "/appointments/<int:id>/reject/"),
+    (DeleteDoctorResource, "/doctors/<int:id>/delete/"),
 )

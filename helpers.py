@@ -16,7 +16,6 @@ specialities_possible = ["endocrinologist",
                          'allegologist',
                          ]
 
-
 users_models = {
          "doctor": DoctorModel,
          "patient": PatientModel,

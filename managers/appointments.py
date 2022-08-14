@@ -3,7 +3,9 @@ from datetime import datetime
 from werkzeug.exceptions import BadRequest
 
 from db import db
-from models import DoctorModel, AppointmentsModel, UserRole, AppointmentStatus
+from email_templetes import approved_appointment, rejected_appointment
+from models import DoctorModel, AppointmentsModel, UserRole, AppointmentStatus, PatientModel
+from services.aws_create_instance import aws_ses
 
 
 class AppointmentsManager:
@@ -42,10 +44,29 @@ class AppointmentsManager:
         return appointment
 
     @staticmethod
+    def get_needed_data_for_acton(appointment_id):
+        all_app_info = AppointmentsModel.query.filter_by(id=appointment_id).first()
+        all_patient_info = PatientModel.query.filter_by(id=all_app_info.patient_id).first()
+        email = all_patient_info.email
+        date_of_appointment = all_app_info.date_of_appointment
+
+        return email, date_of_appointment
+
+    @staticmethod
     def approve(appointment_id):
-        AppointmentsModel.query.filter_by(id=appointment_id).update({"status": AppointmentStatus.approved})
+        email, date_of_appointment = AppointmentsManager.get_needed_data_for_acton(appointment_id)
+        try:
+            AppointmentsModel.query.filter_by(id=appointment_id).update({"status": AppointmentStatus.approved})
+            aws_ses.send_email(email=email, email_body=approved_appointment(date_of_appointment=date_of_appointment))
+        except Exception:
+            return Exception
 
     @staticmethod
     def reject(appointment_id):
-        AppointmentsModel.query.filter_by(id=appointment_id).update({"status": AppointmentStatus.rejected})
+        email, date_of_appointment = AppointmentsManager.get_needed_data_for_acton(appointment_id)
+        try:
+            AppointmentsModel.query.filter_by(id=appointment_id).update({"status": AppointmentStatus.rejected})
+            aws_ses.send_email(email=email, email_body=rejected_appointment(date_of_appointment=date_of_appointment))
+        except Exception:
+            return Exception
 

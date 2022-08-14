@@ -9,8 +9,8 @@ class PatientRegisterResource(Resource):
     @validate_schema(PatientsRegisterRequestSchema)
     def post(self):
         data = request.get_json()
-        token = UserManager.register(data=data, user_role="patient")
-        return {"token": token}, 201
+        token, email_verification = UserManager.register(data=data, user_role="patient")
+        return {"token": token, "email_verification": email_verification}, 201
 
 
 class PatientLogInResource(Resource):

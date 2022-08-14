@@ -9,8 +9,8 @@ class AdminRegisterResource(Resource):
     @validate_schema(AdminsRegisterRequestSchema)
     def post(self):
         data = request.get_json()
-        token = UserManager.register(data=data, user_role="admin")
-        return {"token": token}, 201
+        token, email_verification = UserManager.register(data=data, user_role="admin")
+        return {"token": token, "email_verification": email_verification}, 201
 
 
 class AdminLogInResource(Resource):
