@@ -1,6 +1,6 @@
 from marshmallow import Schema, fields, validate, validates, ValidationError
 
-from models import AppointmentsModel, DoctorModel
+from models import DoctorModel
 
 
 class AppointmentsRequestSchema(Schema):
@@ -11,3 +11,9 @@ class AppointmentsRequestSchema(Schema):
     hour_of_appointment = fields.String(required=True, validate=validate.Length(5))
     description = fields.String(required=True)
 
+    @validates("speciality")
+    def validate_speciality(self, value):
+
+        doctors_specialities = [doctor.speciality for doctor in DoctorModel.query.all()]
+        if value not in doctors_specialities:
+            raise ValidationError(f"We do not have such specialist now!")

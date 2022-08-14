@@ -47,26 +47,30 @@ class AppointmentsManager:
     def get_needed_data_for_acton(appointment_id):
         all_app_info = AppointmentsModel.query.filter_by(id=appointment_id).first()
         all_patient_info = PatientModel.query.filter_by(id=all_app_info.patient_id).first()
+        first_name = all_patient_info.first_name
         email = all_patient_info.email
         date_of_appointment = all_app_info.date_of_appointment
 
-        return email, date_of_appointment
+        return first_name, email, date_of_appointment
 
     @staticmethod
     def approve(appointment_id):
-        email, date_of_appointment = AppointmentsManager.get_needed_data_for_acton(appointment_id)
+        first_name, email, date_of_appointment = AppointmentsManager.get_needed_data_for_acton(appointment_id)
         try:
             AppointmentsModel.query.filter_by(id=appointment_id).update({"status": AppointmentStatus.approved})
-            aws_ses.send_email(email=email, email_body=approved_appointment(date_of_appointment=date_of_appointment))
+            aws_ses.send_email(email=email,
+                               email_body=approved_appointment(first_name=first_name,
+                                                               date_of_appointment=date_of_appointment))
         except Exception:
             return Exception
 
     @staticmethod
     def reject(appointment_id):
-        email, date_of_appointment = AppointmentsManager.get_needed_data_for_acton(appointment_id)
+        first_name, email, date_of_appointment = AppointmentsManager.get_needed_data_for_acton(appointment_id)
         try:
             AppointmentsModel.query.filter_by(id=appointment_id).update({"status": AppointmentStatus.rejected})
-            aws_ses.send_email(email=email, email_body=rejected_appointment(date_of_appointment=date_of_appointment))
+            aws_ses.send_email(email=email,
+                               email_body=rejected_appointment(first_name=first_name,
+                                                               date_of_appointment=date_of_appointment))
         except Exception:
             return Exception
-
