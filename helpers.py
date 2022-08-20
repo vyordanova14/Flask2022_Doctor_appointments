@@ -16,7 +16,7 @@ specialities_possible = [
     "surgeon",
     "cardiologist",
     "neurologist",
-    "allegologist",
+    "allergologist",
 ]
 # User roles and their corresponding Model
 users_models = {

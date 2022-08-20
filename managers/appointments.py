@@ -1,6 +1,7 @@
 from datetime import datetime, date
 
-from werkzeug.exceptions import BadRequest, Unauthorized
+from botocore.exceptions import ClientError
+from werkzeug.exceptions import BadRequest, Unauthorized, InternalServerError
 
 from db import db
 from email_templetes import approved_appointment, rejected_appointment
@@ -8,7 +9,7 @@ from models import DoctorModel, AppointmentsModel, UserRole, AppointmentStatus, 
 from services.aws_create_instance import aws_ses
 
 
-class AppointmentsManager:
+class AppointmentsUserManager:
 
     @staticmethod
     def get_user(user):
@@ -49,6 +50,7 @@ class AppointmentsManager:
 
         data["date_of_appointment"] = datetime.strptime(data["date_of_appointment"], '%Y-%m-%d').date()
         data['patient_id'] = user.id
+
         data['doctor_id'] = DoctorModel.query.filter_by(first_name=doctors_first_name,
                                                         last_name=doctors_last_name,
                                                         speciality=data["speciality"]).first().id
@@ -69,6 +71,8 @@ class AppointmentsManager:
 
         return appointment
 
+
+class AppointmentsPostActionManager:
     @staticmethod
     def get_needed_data_for_acton(appointment_id):
         """
@@ -100,7 +104,7 @@ class AppointmentsManager:
             appointment_id: primary key of the appointment
         """
         first_name, email, date_of_appointment, doctor_id = \
-            AppointmentsManager.get_needed_data_for_acton(appointment_id)
+            AppointmentsPostActionManager.get_needed_data_for_acton(appointment_id)
 
         if user_id == doctor_id:
             AppointmentsModel.query.filter_by(id=appointment_id).update({"status": AppointmentStatus.approved})
@@ -119,7 +123,7 @@ class AppointmentsManager:
         Args:
             appointment_id: primary key of the appointment
         """
-        first_name, email, date_of_appointment, doctor_id = AppointmentsManager.get_needed_data_for_acton(appointment_id)
+        first_name, email, date_of_appointment, doctor_id = AppointmentsPostActionManager.get_needed_data_for_acton(appointment_id)
         if user_id == doctor_id:
             AppointmentsModel.query.filter_by(id=appointment_id).update({"status": AppointmentStatus.rejected})
             aws_ses.send_email(email=email,

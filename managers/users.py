@@ -21,16 +21,18 @@ class UserManager:
             user_role: string holding whether user is a patient, a user or an admin
         """
         data['password'] = generate_password_hash(data['password'])
-        user = UserManager.users[user_role](**data)
-        try:
+        check_email = UserManager.users[user_role].query.filter_by(email=data['email']).first()
+
+        if not check_email:
+            user = UserManager.users[user_role](**data)
+            send_verification_email = aws_ses.verify_email_identity(email=data["email"])
+
             db.session.add(user)
             db.session.flush()
 
-            send_verification_email = aws_ses.verify_email_identity(email=data["email"])
-        except Exception:
-            return {"message": "No access to DB. Please try again later!"}
-
-        return AuthManager.encode_token(user), send_verification_email
+            return AuthManager.encode_token(user), send_verification_email
+        else:
+            raise BadRequest("User with this email already exists!")
 
     @staticmethod
     def login(data, user_role):

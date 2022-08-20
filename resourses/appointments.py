@@ -1,7 +1,7 @@
 from flask import request
 from flask_restful import Resource
 
-from managers.appointments import AppointmentsManager
+from managers.appointments import AppointmentsUserManager, AppointmentsPostActionManager
 from managers.auth import auth
 from models import UserRole
 from schemas.requests.appointments import AppointmentsRequestSchema
@@ -17,7 +17,7 @@ class AppointmentsResource(Resource):
         Return: <json> data extracted from DB
         """
         current_user = auth.current_user()
-        appointment = AppointmentsManager.get_user(current_user)
+        appointment = AppointmentsUserManager.get_user(current_user)
 
         return AppointmentsResponseSchema().dump(appointment, many=True), 201
 
@@ -31,7 +31,7 @@ class AppointmentsResource(Resource):
         """
         data = request.get_json()
         current_user = auth.current_user()
-        new_appointment = AppointmentsManager.create_appointment(data, current_user)
+        new_appointment = AppointmentsUserManager.create_appointment(data, current_user)
 
         return AppointmentsResponseSchema().dump(new_appointment), 201
 
@@ -50,7 +50,7 @@ class ApproveAppointmentResource(Resource):
         """
         current_user = auth.current_user()
         user_id = current_user.id
-        AppointmentsManager.approve(id_app, user_id)
+        AppointmentsPostActionManager.approve(id_app, user_id)
         return 204
 
 
@@ -68,5 +68,5 @@ class RejectAppointmentResource(Resource):
         """
         current_user = auth.current_user()
         user_id = current_user.id
-        AppointmentsManager.reject(id_app, user_id)
+        AppointmentsPostActionManager.reject(id_app, user_id)
         return 204
