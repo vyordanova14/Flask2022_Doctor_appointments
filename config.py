@@ -28,6 +28,16 @@ class DevConfig:
     )
 
 
+class TestConfig:
+    FLASK_ENV = "test"
+    DEBUG = True
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = (
+        f"postgresql://{config('TEST_DB_USER')}:{config('TEST_DB_PASSWORD')}"
+        f"@localhost:{config('TEST_DB_PORT')}/{config('TEST_DB_NAME')}"
+    )
+
+
 def create_app(config='config.DevConfig'):
     app = Flask(__name__)
     configuration = config
