@@ -2,7 +2,6 @@ from flask_testing import TestCase
 
 from config import create_app
 from db import db
-from resourses.specialties_doctors import RegisteredDoctorsBySpecialty
 from tests.factories import PatientFactory, DoctorFactory, AdminFactory
 from tests.helpers import generate_token
 
@@ -30,9 +29,9 @@ class TestApp(TestCase):
             endpoints_data = (
                 ("/doctors/1/delete/", self.client.delete),
             )
-        elif type_request == "specialty":
+        elif type_request == "appointments":
             endpoints_data = (
-                ("/specialists/", self.client.get),
+                ("/appointments/", self.client.post),
             )
         else:
             endpoints_data = (
@@ -64,6 +63,17 @@ class TestApp(TestCase):
             status_code_method(resp)
             self.assertEqual(resp.json, expected_message)
 
+    def permissions_required(self, users, type_req):
+        for user in users:
+            instance = user()
+            token = generate_token(instance)
+            headers = {"Authorization": f"Bearer {token}"}
+
+            self.iterate_endpoint(self.assert_403,
+                                  {"message": "You do not have permission!"},
+                                  type_req=type_req,
+                                  headers=headers)
+
     def test_login_required(self):
         self.iterate_endpoint(self.assert_401, {"message": "Missing token!"})
 
@@ -73,27 +83,12 @@ class TestApp(TestCase):
 
     def test_permissions_approve_reject_patient(self):
         users = [PatientFactory, AdminFactory]
-
-        for user in users:
-            instance = user()
-            token = generate_token(instance)
-            headers = {"Authorization": f"Bearer {token}"}
-
-            self.iterate_endpoint(self.assert_403,
-                                  {"message": "You do not have permission!"},
-                                  type_req="app_rej",
-                                  headers=headers)
+        self.permissions_required(users=users, type_req="app_rej")
 
     def test_permissions_delete(self):
-
         users = [PatientFactory, DoctorFactory]
+        self.permissions_required(users=users, type_req="del")
 
-        for user in users:
-            instance = user()
-            token = generate_token(instance)
-            headers = {"Authorization": f"Bearer {token}"}
-
-            self.iterate_endpoint(self.assert_403,
-                                  {"message": "You do not have permission!"},
-                                  type_req="del",
-                                  headers=headers)
+    def test_permission_create_appointments(self):
+        users = [AdminFactory, DoctorFactory]
+        self.permissions_required(users=users, type_req="appointments")
