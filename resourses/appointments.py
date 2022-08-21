@@ -51,7 +51,7 @@ class ApproveAppointmentResource(Resource):
         current_user = auth.current_user()
         user_id = current_user.id
         AppointmentsPostActionManager.approve(id_app, user_id)
-        return 204
+        return 200
 
 
 class RejectAppointmentResource(Resource):
@@ -69,4 +69,4 @@ class RejectAppointmentResource(Resource):
         current_user = auth.current_user()
         user_id = current_user.id
         AppointmentsPostActionManager.reject(id_app, user_id)
-        return 204
+        return 200
