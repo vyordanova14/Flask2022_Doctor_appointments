@@ -48,12 +48,9 @@ class TestApp(TestCase):
     def iterate_endpoint(self, status_code_method,
                          expected_message,
                          type_req=None,
-                         headers=None,
-                         payload=None):
+                         headers=None):
         if not headers:
             headers = {}
-        if not payload:
-            payload = {}
 
         endpoints_data = self.endpoints_data(type_request=type_req)
 
