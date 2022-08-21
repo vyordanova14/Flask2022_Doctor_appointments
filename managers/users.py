@@ -20,8 +20,10 @@ class UserManager:
             data: <json> data coming from user
             user_role: string holding whether user is a patient, a user or an admin
         """
-        data['password'] = generate_password_hash(data['password'])
-        check_email = UserManager.users[user_role].query.filter_by(email=data['email']).first()
+        data["password"] = generate_password_hash(data["password"])
+        check_email = (
+            UserManager.users[user_role].query.filter_by(email=data["email"]).first()
+        )
 
         if not check_email:
             user = UserManager.users[user_role](**data)
@@ -45,14 +47,14 @@ class UserManager:
 
         Return: string holding encoded token
         """
-        user = UserManager.users[user_role].query.filter_by(email=data['email']).first()
+        user = UserManager.users[user_role].query.filter_by(email=data["email"]).first()
 
         if not user:
-            raise BadRequest('No such email. Please register!')
+            raise BadRequest("No such email. Please register!")
 
-        if check_password_hash(user.password, data['password']):
+        if check_password_hash(user.password, data["password"]):
             return AuthManager.encode_token(user)
-        raise BadRequest('Wrong credentials!')
+        raise BadRequest("Wrong credentials!")
 
     @staticmethod
     def delete_doctor(doctor_id):
@@ -63,7 +65,9 @@ class UserManager:
         Args:
             doctor_id: primary key in doctors' table
         """
-        doctors_appointments = AppointmentsModel.query.filter_by(doctor_id=doctor_id).all()
+        doctors_appointments = AppointmentsModel.query.filter_by(
+            doctor_id=doctor_id
+        ).all()
         doctor_record = DoctorModel.query.filter_by(id=doctor_id).first()
 
         [db.session.delete(appointments) for appointments in doctors_appointments]

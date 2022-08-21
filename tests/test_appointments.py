@@ -24,7 +24,10 @@ class TestAppointment(TestCase):
 
         instance = PatientFactory()
         token = generate_token(instance)
-        headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
+        headers = {
+            "Authorization": f"Bearer {token}",
+            "Content-Type": "application/json",
+        }
 
         data = {
             "doctors_first_name": "Test",
@@ -32,7 +35,7 @@ class TestAppointment(TestCase):
             "speciality": "Test",
             "date_of_appointment": "2022-08-29",
             "hour_of_appointment": "14:00",
-            "description": "Something"
+            "description": "Something",
         }
 
         doctor_data = {

@@ -17,7 +17,9 @@ class BaseRegisterRequestSchema(Schema):
         """
         errors = policy.test(value)
         if errors:
-            raise ValidationError(f'The password does not meet the requirements: {errors}')
+            raise ValidationError(
+                f"The password does not meet the requirements: {errors}"
+            )
 
 
 class BaseLogInRequestSchema(Schema):

@@ -24,14 +24,14 @@ def approved_appointment(first_name, date_of_appointment):
 
 def rejected_appointment(first_name, date_of_appointment):
     """
-        Creates email body template for rejected appointments
+    Creates email body template for rejected appointments
 
-        Args:
-            first_name: name of recipient
-            date_of_appointment: date of appointment
+    Args:
+        first_name: name of recipient
+        date_of_appointment: date of appointment
 
-        Return: html string holding the email body
-        """
+    Return: html string holding the email body
+    """
     template = f"""
             <html>
                 <head></head>

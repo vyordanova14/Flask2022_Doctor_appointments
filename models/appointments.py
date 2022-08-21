@@ -5,7 +5,7 @@ from models.enums import AppointmentStatus
 
 
 class AppointmentsModel(db.Model):
-    __tablename__ = 'appointments'
+    __tablename__ = "appointments"
 
     id = db.Column(db.Integer, primary_key=True)
     speciality = db.Column(db.String(100), nullable=False)
@@ -14,8 +14,8 @@ class AppointmentsModel(db.Model):
     description = db.Column(db.Text, nullable=False)
     created_on = db.Column(db.DateTime, server_default=func.now())
     status = db.Column(db.Enum(AppointmentStatus), default=AppointmentStatus.pending)
-    patient_id = db.Column(db.Integer, db.ForeignKey('patients.id'), nullable=False)
-    doctor_id = db.Column(db.Integer, db.ForeignKey('doctors.id'), nullable=False)
+    patient_id = db.Column(db.Integer, db.ForeignKey("patients.id"), nullable=False)
+    doctor_id = db.Column(db.Integer, db.ForeignKey("doctors.id"), nullable=False)
 
-    patient = db.relationship('PatientModel')
-    doctor = db.relationship('DoctorModel')
+    patient = db.relationship("PatientModel")
+    doctor = db.relationship("DoctorModel")

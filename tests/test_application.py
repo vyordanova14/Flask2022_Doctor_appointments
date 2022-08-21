@@ -26,13 +26,9 @@ class TestApp(TestCase):
                 ("/appointments/1/reject/", self.client.put),
             )
         elif type_request == "del":
-            endpoints_data = (
-                ("/doctors/1/delete/", self.client.delete),
-            )
+            endpoints_data = (("/doctors/1/delete/", self.client.delete),)
         elif type_request == "appointments":
-            endpoints_data = (
-                ("/appointments/", self.client.post),
-            )
+            endpoints_data = (("/appointments/", self.client.post),)
         else:
             endpoints_data = (
                 ("/specialists/", self.client.get),
@@ -45,10 +41,9 @@ class TestApp(TestCase):
 
         return endpoints_data
 
-    def iterate_endpoint(self, status_code_method,
-                         expected_message,
-                         type_req=None,
-                         headers=None):
+    def iterate_endpoint(
+        self, status_code_method, expected_message, type_req=None, headers=None
+    ):
         if not headers:
             headers = {}
 
@@ -66,17 +61,21 @@ class TestApp(TestCase):
             token = generate_token(instance)
             headers = {"Authorization": f"Bearer {token}"}
 
-            self.iterate_endpoint(self.assert_403,
-                                  {"message": "You do not have permission!"},
-                                  type_req=type_req,
-                                  headers=headers)
+            self.iterate_endpoint(
+                self.assert_403,
+                {"message": "You do not have permission!"},
+                type_req=type_req,
+                headers=headers,
+            )
 
     def test_login_required(self):
         self.iterate_endpoint(self.assert_401, {"message": "Missing token!"})
 
     def test_validity_token(self):
         headers = {"Authorization": "Bearer ogxed"}
-        self.iterate_endpoint(self.assert_401, {"message": "Invalid token!"}, headers=headers)
+        self.iterate_endpoint(
+            self.assert_401, {"message": "Invalid token!"}, headers=headers
+        )
 
     def test_permissions_approve_reject_patient(self):
         users = [PatientFactory, AdminFactory]

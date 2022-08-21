@@ -5,8 +5,8 @@ from models import DoctorModel, PatientModel, AdminModel
 # Requirements for password
 policy = PasswordPolicy.from_names(
     uppercase=1,  # need min. 1 uppercase letters
-    numbers=1,    # need min. 1 digits
-    special=1,    # need min. 1 special characters
+    numbers=1,  # need min. 1 digits
+    special=1,  # need min. 1 special characters
 )
 
 # Specialities available for online appointments

@@ -1,7 +1,11 @@
-from flask_restful import Resource
 from flask import request
+from flask_restful import Resource
+
 from managers.users import UserManager
-from schemas.requests.auth_doctors import DoctorsRegisterRequestSchema, DoctorsLogInRequestSchema
+from schemas.requests.auth_doctors import (
+    DoctorsRegisterRequestSchema,
+    DoctorsLogInRequestSchema,
+)
 from utils.decoratores import validate_schema
 
 

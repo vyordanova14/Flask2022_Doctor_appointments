@@ -17,17 +17,17 @@ class PatientModel(BaseUserModel):
 
     phone = db.Column(db.String(50), nullable=False)
     role = db.Column(db.Enum(UserRole), default=UserRole.patient, nullable=False)
-    appointment = db.relationship('AppointmentsModel')
+    appointment = db.relationship("AppointmentsModel")
 
 
 class DoctorModel(BaseUserModel):
     __tablename__ = "doctors"
 
     speciality = db.Column(db.String(100), nullable=False)
-    win_code = db.Column(db.String(10), nullable=False, server_default='0000000000')
+    win_code = db.Column(db.String(10), nullable=False, server_default="0000000000")
     role = db.Column(db.Enum(UserRole), default=UserRole.doctor, nullable=False)
 
-    appointment = db.relationship('AppointmentsModel')
+    appointment = db.relationship("AppointmentsModel")
 
 
 class AdminModel(BaseUserModel):

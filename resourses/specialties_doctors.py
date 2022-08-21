@@ -25,5 +25,7 @@ class RegisteredDoctorsBySpecialty(Resource):
             specialists = DoctorModel.query.filter_by(speciality=speciality).all()
             return SpecialitySchemaResponse().dump(specialists, many=True), 201
 
-        raise BadRequest(f"There are no available {speciality}s for online appointments. "
-                         f"Please check the available: {specialities_possible}")
+        raise BadRequest(
+            f"There are no available {speciality}s for online appointments. "
+            f"Please check the available: {specialities_possible}"
+        )

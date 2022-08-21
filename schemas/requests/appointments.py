@@ -8,7 +8,9 @@ class AppointmentsRequestSchema(Schema):
     doctors_last_name = fields.String(required=True)
     speciality = fields.String(required=True)
     date_of_appointment = fields.String(required=True)
-    hour_of_appointment = fields.String(required=True, validate=validate.Length(min=5, max=5))
+    hour_of_appointment = fields.String(
+        required=True, validate=validate.Length(min=5, max=5)
+    )
     description = fields.String(required=True)
 
     @validates("doctors_first_name")

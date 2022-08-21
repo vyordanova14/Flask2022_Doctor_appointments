@@ -13,7 +13,9 @@ def validate_schema(schema_name):
             if errors:
                 abort(400, errors=errors)
             return f(*args, **kwargs)
+
         return decorated_function
+
     return decorator
 
 
@@ -24,5 +26,7 @@ def permission_required(user_role):
             if current_user.role == user_role:
                 return func(*args, **kwargs)
             raise Forbidden("You do not have permission!")
+
         return decorated_function
+
     return decorator

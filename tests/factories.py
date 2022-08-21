@@ -1,8 +1,6 @@
-from db import db
-from random import randint
-
 import factory
 
+from db import db
 from models import DoctorModel, UserRole, PatientModel, AdminModel
 
 
@@ -52,4 +50,3 @@ class AdminFactory(BaseFactory):
     email = factory.Faker("email")
     password = factory.Faker("password")
     role = UserRole.admin
-

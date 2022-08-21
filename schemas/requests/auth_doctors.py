@@ -19,8 +19,10 @@ class DoctorsRegisterRequestSchema(BaseRegisterRequestSchema):
             value: string holding speciality coming from doctor
         """
         if value not in specialities_possible:
-            raise ValidationError(f'Your specialty {value} is not available for online appointment!'
-                                  f' Please check the available specialties: {specialities_possible}')
+            raise ValidationError(
+                f"Your specialty {value} is not available for online appointment!"
+                f" Please check the available specialties: {specialities_possible}"
+            )
 
 
 class DoctorsLogInRequestSchema(BaseLogInRequestSchema):

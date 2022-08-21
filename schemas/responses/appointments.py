@@ -1,4 +1,4 @@
-from marshmallow import Schema, fields, validate, validates, ValidationError
+from marshmallow import Schema, fields, validate
 from marshmallow_enum import EnumField
 
 from models import AppointmentStatus

@@ -1,5 +1,4 @@
 from decouple import config
-
 from flask import Flask
 from flask_migrate import Migrate
 from flask_restful import Api
@@ -38,7 +37,7 @@ class TestConfig:
     )
 
 
-def create_app(config='config.DevConfig'):
+def create_app(config="config.DevConfig"):
     app = Flask(__name__)
     configuration = config
     app.config.from_object(configuration)

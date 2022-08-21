@@ -1,2 +1,2 @@
-from models.users import *
 from models.appointments import *
+from models.users import *
